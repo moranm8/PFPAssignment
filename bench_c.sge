@@ -3,5 +3,4 @@
 #$ -l h_rt=:20:
 #$ -pe mpi 16
 #$ -cwd
-cd C
 ./MD

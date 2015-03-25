@@ -20,10 +20,7 @@
 #include <math.h>
 #include "coord.h"
 
-void visc_force(int N,double *f, double *visc, double *vel);
-void add_norm(int N,double *r, double *delta);
 double force(double W, double delta, double r);
-void wind_force(int N,double *f, double *visc, double vel);
 
 
 
@@ -38,24 +35,36 @@ int collided;
  * Loop over timesteps.
  */
       for(step = 1;step<=count;step++){
-        printf("timestep %d\n",step);
-        printf("collisions %d\n",collisions);
+        //printf("timestep %d\n",step);
+        //printf("collisions %d\n",collisions);
 
 /* set the viscosity term in the force calculation */
-        for(j=0;j<Ndim;j++){
-          visc_force(Nbody,f[j],visc,vel[j]);
-        }
+  for(j=0;j<Ndim;j++)
+    {
+      for(i=0;i<Nbody;i++)
+	{
+	  f[j][i] = -visc[i] * vel[j][i];
+	}
+    }
 /* add the wind term in the force calculation */
-        for(j=0;j<Ndim;j++){
-          wind_force(Nbody,f[j],visc,wind[j]);
-        }
+  for(j=0;j<Ndim;j++)
+    {
+      for(i=0;i<Nbody;i++)
+	{
+	  f[j][i] = f[j][i] -visc[i] * wind[j];
+	}
+    }
 /* calculate distance from central mass */
         for(k=0;k<Nbody;k++){
           r[k] = 0.0;
         }
-        for(i=0;i<Ndim;i++){
-	  add_norm(Nbody,r,pos[i]);
-        }
+	for(i=0;i<Ndim;i++)
+	  {
+	    for(k=0;k<Nbody;k++)
+	      {
+		r[k] += (pos[i][k] * pos[i][k]);
+	      }
+	  }
         for(k=0;k<Nbody;k++){
           r[k] = sqrt(r[k]);
         }
@@ -81,9 +90,13 @@ int collided;
         for(k=0;k<Npair;k++){
           delta_r[k] = 0.0;
         }
-        for(i=0;i<Ndim;i++){
-	  add_norm(Npair,delta_r,delta_pos[i]);
-        }
+	for(i=0;i<Ndim;i++)
+	  {
+	    for(k=0;k<Npair;k++)
+	      {
+		delta_r[k] += (delta_pos[i][k] * delta_pos[i][k]);
+	      }
+	  }
         for(k=0;k<Npair;k++){
           delta_r[k] = sqrt(delta_r[k]);
         }

@@ -30,6 +30,7 @@ void evolve(int count,double dt){
   int  step;
   int i,j,k,l;
   int collided;
+  double tempForce;
 
   /*
    * Loop over timesteps.
@@ -54,9 +55,9 @@ void evolve(int count,double dt){
 
     /* calculate central force */
     for(i=0;i<Nbody;i++){
+      tempForce = force(G*mass[i]*M_central,1,r[i]);
       for(l=0;l<Ndim;l++){
-	f[i][l] = f[i][l] - 
-	  force(G*mass[i]*M_central,pos[i][l],r[i]);
+	f[i][l] = f[i][l] - pos[i][l]*tempForce;                       //Save force(G*mass[i]*M_central,1,r[i]) and reuse?
       }
     }
     /* calculate pairwise separation of particles */

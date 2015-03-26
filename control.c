@@ -39,11 +39,13 @@ int main(int argc, char *argv[]){
   pos[0] = calloc(Ndim*Nbody,sizeof(double));
   vel[0] = calloc(Ndim*Nbody,sizeof(double));
   delta_pos[0] = calloc(Ndim*Nbody*Nbody,sizeof(double));
-  for(i=1;i<Ndim;i++){
-    f[i] = f[0] + i * Nbody;
-    pos[i] = pos[0] + i * Nbody;
-    vel[i] = vel[0] + i * Nbody;
-    delta_pos[i] = delta_pos[0] + i*Nbody*Nbody;
+  for(i=1;i<Nbody;i++){
+    f[i] = f[0] + i * Ndim;
+    pos[i] = pos[0] + i * Ndim;
+    vel[i] = vel[0] + i * Ndim;
+  }
+  for(i=1;i<Npair;i++){
+    delta_pos[i] = delta_pos[0] + i*Ndim;
   }
 
 /* read the initial data from a file */
@@ -58,8 +60,8 @@ int main(int argc, char *argv[]){
 
   for(i=0;i<Nbody;i++){
     fscanf(in,"%16le%16le%16le%16le%16le%16le%16le%16le\n",mass+i,visc+i,
-      &pos[Xcoord][i], &pos[Ycoord][i], &pos[Zcoord][i],
-      &vel[Xcoord][i], &vel[Ycoord][i], &vel[Zcoord][i]);
+      &pos[i][Xcoord], &pos[i][Ycoord], &pos[i][Zcoord],
+      &vel[i][Xcoord], &vel[i][Ycoord], &vel[i][Zcoord]);
   }
   fclose(in);
 
@@ -88,8 +90,8 @@ int main(int argc, char *argv[]){
       for(i=0;i<Nbody;i++){
 	fprintf(out,"%16.8E%16.8E%16.8E%16.8E%16.8E%16.8E%16.8E%16.8E\n",
 		mass[i],visc[i],
-		pos[Xcoord][i], pos[Ycoord][i], pos[Zcoord][i],
-		vel[Xcoord][i], vel[Ycoord][i], vel[Zcoord][i]);
+		pos[i][Xcoord], pos[i][Ycoord], pos[i][Zcoord],
+		vel[i][Xcoord], vel[i][Ycoord], vel[i][Zcoord]);
       }
       fclose(out);
   }

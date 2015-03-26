@@ -26,7 +26,7 @@ enum{ Xcoord=0, Ycoord, Zcoord, Ndim };
       
 DEF double *pos[Nbody], *vel[Nbody];
 DEF double *f[Nbody], *visc, *mass;
-DEF double *delta_pos[Nbody*Nbody];
+DEF double *delta_pos[Npair];
 DEF double *r;
 DEF double *delta_r;
 DEF double wind[Ndim];

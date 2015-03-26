@@ -1,0 +1,10 @@
+100 timesteps took 36.766328 seconds
+collisions 0
+200 timesteps took 40.864317 seconds
+collisions 8596
+300 timesteps took 40.730197 seconds
+collisions 42704
+400 timesteps took 40.993534 seconds
+collisions 54627
+500 timesteps took 47.915987 seconds
+collisions 68528

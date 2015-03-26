@@ -31,6 +31,7 @@ void evolve(int count,double dt){
   int i,j,k,l;
   int collided;
   double tempForce;
+  double finalForce;
 
   /*
    * Loop over timesteps.
@@ -84,18 +85,20 @@ void evolve(int count,double dt){
     for(i=0;i<Nbody;i++){
       for(j=i+1;j<Nbody;j++){
 	collided=0;
+	tempForce = force(G*mass[i]*mass[j],1,delta_r[k]);
 	for(l=0;l<Ndim;l++){
+	  finalForce = delta_pos[k][l]*tempForce;
 	  /*  flip force if close in */
 	  if( delta_r[k] >= Size ){
 	    f[i][l] = f[i][l] - 
-	      force(G*mass[i]*mass[j],delta_pos[k][l],delta_r[k]);
+	      finalForce;
 	    f[j][l] = f[j][l] + 
-	      force(G*mass[i]*mass[j],delta_pos[k][l],delta_r[k]);
+	      finalForce;
 	  }else{
 	    f[i][l] = f[i][l] + 
-	      force(G*mass[i]*mass[j],delta_pos[k][l],delta_r[k]);
+	      finalForce;
 	    f[j][l] = f[j][l] - 
-	      force(G*mass[i]*mass[j],delta_pos[k][l],delta_r[k]);
+	      finalForce;
 	    collided=1;
 	  }
 	}

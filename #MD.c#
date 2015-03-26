@@ -30,6 +30,7 @@ void evolve(int count,double dt){
   int  step;
   int i,j,k,l;
   int collided;
+  int tempForce
 
   /*
    * Loop over timesteps.
@@ -47,14 +48,16 @@ void evolve(int count,double dt){
 	  }
       }
     /* calculate distance from central mass */
-    for(k=0;k<Nbody;k++){
-      r[k] = sqrt(pos[k][Xcoord] * pos[k][Xcoord] + pos[k][Ycoord] * pos[k][Ycoord] + pos[k][Zcoord] * pos[k][Zcoord]);
-    }
+    for(k=0;k<Nbody;k++)
+      {
+	r[k] = sqrt(pos[k][0] * pos[k][0] + pos[k][1] * pos[k][1] + pos[k][2] * pos[k][2]);
+      }
+
     /* calculate central force */
     for(i=0;i<Nbody;i++){
+      tempForce = force(G*mass[i]*M_central,1,r[i]);
       for(l=0;l<Ndim;l++){
-	f[i][l] = f[i][l] - 
-	  force(G*mass[i]*M_central,pos[i][l],r[i]);
+	f[i][l] = f[i][l] - pos[i][l]*tempForce;                       //Save force(G*mass[i]*M_central,1,r[i]) and reuse?
       }
     }
     /* calculate pairwise separation of particles */
@@ -69,9 +72,10 @@ void evolve(int count,double dt){
     }
 
     /* calculate norm of seperation vector */
-    for(k=0;k<Nbody;k++){
-      delta_r[k] = sqrt(delta_pos[k][Xcoord] * delta_pos[k][Xcoord] + delta_pos[k][Ycoord] * delta_pos[k][Ycoord] + delta_pos[k][Zcoord] * delta_pos[k][Zcoord]);
-    }
+    for(k=0;k<Npair;k++)
+      {
+	delta_r[k] = sqrt(delta_pos[k][0] * delta_pos[k][0] + delta_pos[k][1] * delta_pos[k][1] + delta_pos[k][2] * delta_pos[k][2]);
+      }
 
     /*
      * add pairwise forces.

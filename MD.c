@@ -47,19 +47,11 @@ void evolve(int count,double dt){
 	  }
       }
     /* calculate distance from central mass */
-    for(k=0;k<Nbody;k++){
-      r[k] = 0.0;
-    }
     for(k=0;k<Nbody;k++)
       {
-	for(i=0;i<Ndim;i++)
-	  {
-	    r[k] += (pos[k][i] * pos[k][i]);
-	  }
+	r[k] = sqrt(pos[k][0] * pos[k][0] + pos[k][1] * pos[k][1] + pos[k][2] * pos[k][2]);
       }
-    for(k=0;k<Nbody;k++){
-      r[k] = sqrt(r[k]);
-    }
+
     /* calculate central force */
     for(i=0;i<Nbody;i++){
       for(l=0;l<Ndim;l++){
@@ -79,19 +71,10 @@ void evolve(int count,double dt){
     }
 
     /* calculate norm of seperation vector */
-    for(k=0;k<Npair;k++){
-      delta_r[k] = 0.0;
-    }
     for(k=0;k<Npair;k++)
       {
-	for(i=0;i<Ndim;i++)
-	  {
-	    delta_r[k] += (delta_pos[k][i] * delta_pos[k][i]);
-	  }
+	delta_r[k] = sqrt(delta_pos[k][0] * delta_pos[k][0] + delta_pos[k][1] * delta_pos[k][1] + delta_pos[k][2] * delta_pos[k][2]);
       }
-    for(k=0;k<Npair;k++){
-      delta_r[k] = sqrt(delta_r[k]);
-    }
 
     /*
      * add pairwise forces.

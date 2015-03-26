@@ -32,7 +32,7 @@ void evolve(int count,double dt){
   int collided;
   double tempForce;
   double finalForce;
-  double deltaR
+  double deltaR;
 
   /*
    * Loop over timesteps.

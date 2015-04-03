@@ -81,21 +81,23 @@ void evolve(int count,double dt){
 	deltaR = sqrt(delta_pos[k][0] * delta_pos[k][0] + delta_pos[k][1] * delta_pos[k][1] + delta_pos[k][2] * delta_pos[k][2]);
 	collided=0;
 	tempForce = G*mass[i]*mass[j]/pow(deltaR,3);
-	for(l=0;l<Ndim;l++){
-	  finalForce = delta_pos[k][l]*tempForce;
-	  /*  flip force if close in */
-	  if( deltaR >= Size ){
+	/*  flip force if close in */
+	if( deltaR >= Size ){
+	  for(l=0;l<Ndim;l++){
+	    finalForce = delta_pos[k][l]*tempForce;
 	    f[i][l] = f[i][l] - 
 	      finalForce;
 	    f[j][l] = f[j][l] + 
 	      finalForce;
 	  }else{
-	    f[i][l] = f[i][l] + 
-	      finalForce;
-	    f[j][l] = f[j][l] - 
-	      finalForce;
-	    collided=1;
-	  }
+	    for(l=0;l<Ndim;l++){
+	      finalForce = delta_pos[k][l]*tempForce;
+	      f[i][l] = f[i][l] + 
+		finalForce;
+	      f[j][l] = f[j][l] - 
+		finalForce;
+	      collided=1;
+	    }
 	}
 	if( collided == 1 ){
 	  collisions+=1;

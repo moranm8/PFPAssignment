@@ -1,4 +1,4 @@
-SRC=MD.c control.c util.c 
+SRC=MD.c control.c 
 OBJ=$(SRC:.c=.o)
 CC=pgcc
 CFLAGS= -O3

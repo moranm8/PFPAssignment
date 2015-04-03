@@ -36,20 +36,13 @@ void evolve(int count,double dt){
     //printf("collisions %d\n",collisions);
     /* set the viscosity term in the force calculation */
     /* add the wind term in the force calculation */
-    for(i=0;i<Nbody;i++)
-      {
-	for(j=0;j<Ndim;j++)
-	  {
-	    f[i][j] = -visc[i] * (vel[i][j]+wind[j]);
-	  }
-      }
     /* calculate distance from central mass */
 
     /* calculate central force */
     for(i=0;i<Nbody;i++){
       tempForce = G*mass[i]*M_central/pow(sqrt(pos[i][0] * pos[i][0] + pos[i][1] * pos[i][1] + pos[i][2] * pos[i][2]),3);
       for(l=0;l<Ndim;l++){
-	f[i][l] = f[i][l] - pos[i][l]*tempForce;                       //Save force(G*mass[i]*M_central,1,r[i]) and reuse?
+	f[i][l] = - pos[i][l]*tempForce -visc[i] * (vel[i][l]+wind[l]);                       //Save force(G*mass[i]*M_central,1,r[i]) and reuse?
       }
     }
     /* calculate pairwise separation of particles */

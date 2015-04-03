@@ -71,48 +71,37 @@ void evolve(int count,double dt){
      */
     k = 0;
     for(i=0;i<Nbody;i++){
-      for(j=i+1;j<Nbody;j++)
-	{
+      for(j=i+1;j<Nbody;j++){
 	deltaR = sqrt(delta_pos[k][0] * delta_pos[k][0] + delta_pos[k][1] * delta_pos[k][1] + delta_pos[k][2] * delta_pos[k][2]);
 	collided=0;
 	tempForce = G*mass[i]*mass[j]/pow(deltaR,3);
-	/*  flip force if close in */
-	if( deltaR >= Size )
-	  {
-	  for(l=0;l<Ndim;l++){
-	    finalForce = delta_pos[k][l]*tempForce;
+	for(l=0;l<Ndim;l++){
+	  finalForce = delta_pos[k][l]*tempForce;
+	  /*  flip force if close in */
+	  if( deltaR >= Size ){
 	    f[i][l] = f[i][l] - 
 	      finalForce;
 	    f[j][l] = f[j][l] + 
 	      finalForce;
-	  }
 	  }else{
-	    for(l=0;l<Ndim;l++){
-	      finalForce = delta_pos[k][l]*tempForce;
-	      f[i][l] = f[i][l] + 
-		finalForce;
-	      f[j][l] = f[j][l] - 
-		finalForce;
-	    }
-	    collided=1;	    
+	    f[i][l] = f[i][l] + 
+	      finalForce;
+	    f[j][l] = f[j][l] - 
+	      finalForce;
+	    collided=1;
 	  }
+	}
 	if( collided == 1 ){
 	  collisions+=1;
 	}
 	k = k + 1;
-	}
-    }
-
-    /* update positions */
-    for(i=0;i<Nbody;i++){
-      for(j=0;j<Ndim;j++){
-	pos[i][j] = pos[i][j] + dt * vel[i][j];
       }
     }
 
-    /* update velocities */
+    /* update positions and velocity */
     for(i=0;i<Nbody;i++){
       for(j=0;j<Ndim;j++){
+	pos[i][j] = pos[i][j] + dt * vel[i][j];
 	vel[i][j] = vel[i][j] + dt * (f[i][j]/mass[i]);
       }
     }
